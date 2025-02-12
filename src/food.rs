@@ -14,23 +14,23 @@ pub struct Food {
 
 impl Food {
     pub fn new() -> Self {
-        let pos = Self::new_position();
-        Self { x: pos.0, y: pos.1 }
+        let mut instance = Self { x: 0, y: 0 };
+        instance.set_new_position();
+        instance
     }
 
     pub fn draw_food(&mut self, canvas: &mut Canvas<Window>) {
-        let pos = Self::new_position();
         draw_square(
             canvas,
             FOOD_COLOR,
-            pos.0.try_into().unwrap(),
-            pos.1.try_into().unwrap(),
+            self.x.try_into().unwrap(),
+            self.y.try_into().unwrap(),
         );
     }
 
-    pub fn new_position() -> (u32, u32) {
-        let x = (random::<u32>() % (WINDOW_WIDTH / SQUARE_SIZE)) * SQUARE_SIZE;
-        let y = (random::<u32>() % (WINDOW_HEIGHT / SQUARE_SIZE)) * SQUARE_SIZE;
-        (x, y)
+    pub fn set_new_position(&mut self) {
+        // food->x = (rand() % (SCREEN_WIDTH / SQUARE_SIZE)) * SQUARE_SIZE;
+        self.x = (random::<u32>() % (WINDOW_WIDTH / SQUARE_SIZE)) * SQUARE_SIZE;
+        self.y = (random::<u32>() % (WINDOW_HEIGHT / SQUARE_SIZE)) * SQUARE_SIZE;
     }
 }

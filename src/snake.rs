@@ -14,8 +14,8 @@ pub struct Snake {
 
 impl Snake {
     pub fn new() -> Self {
-        let center_x = (WINDOW_WIDTH / SQUARE_SIZE) as i32;
-        let center_y = (WINDOW_HEIGHT / SQUARE_SIZE) as i32;
+        let center_x = 3 * SQUARE_SIZE as i32;
+        let center_y = 3 * SQUARE_SIZE as i32;
         let mut list: VecDeque<Point> = VecDeque::new();
         list.push_back(Point::new(center_x, center_y));
         Self { list }
@@ -28,9 +28,18 @@ impl Snake {
     }
 }
 
-pub fn collisioned(head: Point) -> bool {
-    head.x < 0
-        || head.x >= (WINDOW_WIDTH as i32) / SQUARE_SIZE as i32
+pub fn wall_collisioned(head: Point) -> bool {
+    head.x > WINDOW_WIDTH.try_into().unwrap()
+        || head.x < 0
+        || head.y > WINDOW_HEIGHT.try_into().unwrap()
         || head.y < 0
-        || head.y >= (WINDOW_HEIGHT as i32) / SQUARE_SIZE as i32
+}
+
+pub fn self_collisioned(head: Point, snake: &mut VecDeque<Point>) -> bool {
+    for &segment in snake.clone().iter().skip(1) {
+        if segment == head {
+            return true;
+        }
+    }
+    return false;
 }
